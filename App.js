@@ -20,8 +20,8 @@ export default function App() {
       </TouchableWithoutFeedback>
 
       <View style={styles.container}>
-        {/* <RegistrationScreen /> */}
-        <LoginScreen />
+        <RegistrationScreen />
+        {/* <LoginScreen /> */}
 
         {/* <PostScreen /> */}
 

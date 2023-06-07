@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -13,19 +14,33 @@ import {
 import Button from "../components/Button";
 import { AntDesign } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 const windowWidth = Dimensions.get("window").width;
 
 export default function RegistrationScreen() {
+  const [selectedImage, setSelectedImage] = useState(null);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+    }
+  };
 
   const handleSubmit = () => {
     const data = {
       login,
       email,
       password,
+      selectedImage,
     };
 
     console.log(data);
@@ -39,7 +54,11 @@ export default function RegistrationScreen() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.imageBox}>
+          {selectedImage && (
+            <Image source={{ uri: selectedImage }} style={styles.image} />
+          )}
           <AntDesign
+            onPress={pickImageAsync}
             style={styles.plusIcon}
             name="pluscircleo"
             size={24}
@@ -48,6 +67,7 @@ export default function RegistrationScreen() {
         </View>
 
         <Text style={styles.title}>Registration</Text>
+
         <KeyboardAvoidingView
           style={styles.keyboardViev}
           behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -119,6 +139,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
     transform: [{ translateX: windowWidth / 2 - 60 }],
+  },
+  image: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   plusIcon: {
     position: "absolute",
