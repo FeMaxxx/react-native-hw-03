@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    borderRadius: 16,
   },
   plusIcon: {
     position: "absolute",
